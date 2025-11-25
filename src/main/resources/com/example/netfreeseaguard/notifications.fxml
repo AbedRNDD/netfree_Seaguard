@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.netfreeseaguard.NotificationsController"
+            fx:id="root"
+            prefWidth="360.0" prefHeight="720.0"
+            stylesheets="@app.css"
+            style="-fx-background-color: white;">
+
+    <children>
+
+        <!-- Header with back -->
+        <VBox spacing="8"
+              AnchorPane.topAnchor="16.0"
+              AnchorPane.leftAnchor="16.0"
+              AnchorPane.rightAnchor="16.0">
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Button text="←"
+                        onAction="#onBackClick"
+                        style="-fx-background-color: transparent;
+                               -fx-background-insets: 0;
+                               -fx-border-color: transparent;
+                               -fx-text-fill: #0369a1;
+                               -fx-font-size: 16;
+                               -fx-padding: 4 8 4 4;"/>
+                <VBox spacing="2">
+                    <HBox spacing="8" alignment="CENTER_LEFT">
+                        <Label text="Meldingen"
+                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 16; -fx-font-weight: bold;"/>
+                        <!-- Active badge -->
+                        <Label fx:id="activeBadgeLabel"
+                               text="3 actief"
+                               style="-fx-background-color: #ff6b6b;
+                                      -fx-text-fill: white;
+                                      -fx-font-size: 10;
+                                      -fx-background-radius: 10;
+                                      -fx-padding: 2 6 2 6;"/>
+                    </HBox>
+                    <Label text="Tracker waarschuwingen en updates"
+                           style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <!-- Content area (scrollable) -->
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    AnchorPane.topAnchor="72.0"
+                    AnchorPane.leftAnchor="16.0"
+                    AnchorPane.rightAnchor="16.0"
+                    AnchorPane.bottomAnchor="80.0"
+                    style="-fx-background-color: transparent;">
+            <content>
+                <VBox spacing="10">
+                    <!-- Active warnings summary card -->
+                    <HBox spacing="10"
+                          style="-fx-background-color: linear-gradient(to right, #ff6b6b1A, #ff87870D);
+                                 -fx-background-radius: 14;
+                                 -fx-border-color: rgba(255,107,107,0.3);
+                                 -fx-border-radius: 14;
+                                 -fx-padding: 10;">
+                        <VBox alignment="CENTER" spacing="4">
+                            <StackPane prefWidth="48" prefHeight="48"
+                                       style="-fx-background-color: rgba(255,107,107,0.2);
+                                              -fx-background-radius: 24;">
+                                <Label text="⚠"
+                                       style="-fx-text-fill: #ff6b6b; -fx-font-size: 24;"/>
+                            </StackPane>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Actie vereist"
+                                   style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+                            <Label fx:id="summaryLabel"
+                                   text="3 trackers hebben aandacht nodig"
+                                   wrapText="true"
+                                   style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Notifications list -->
+                    <VBox spacing="8" fx:id="listContainer">
+
+                        <!-- Card 1 -->
+                        <VBox spacing="8"
+                              style="-fx-background-color: white;
+                                     -fx-background-radius: 14;
+                                     -fx-border-color: #ff6b6b;
+                                     -fx-border-width: 0 0 0 4;
+                                     -fx-padding: 10;
+                                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.15), 10, 0, 0, 3);">
+                            <HBox spacing="8">
+                                <StackPane prefWidth="40" prefHeight="40"
+                                           style="-fx-background-color: rgba(255,107,107,0.2);
+                                                  -fx-background-radius: 20;">
+                                    <Label text="⚠"
+                                           style="-fx-text-fill: #ff6b6b; -fx-font-size: 18;"/>
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <HBox spacing="4">
+                                        <Label text="Verbinding verloren"
+                                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+                                        <Label text="⚠️"
+                                               style="-fx-font-size: 11; -fx-text-fill: #ff6b6b;"/>
+                                    </HBox>
+                                    <Label text="Tracker #2847 heeft geen signaal meer"
+                                           wrapText="true"
+                                           style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                                    <HBox spacing="12">
+                                        <HBox spacing="4">
+                                            <Label text="📍" style="-fx-font-size: 11;"/>
+                                            <Label text="Noordzee, 52.3°N 4.2°E"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                        <HBox spacing="4">
+                                            <Label text="⏱" style="-fx-font-size: 11;"/>
+                                            <Label text="5 min geleden"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card 2 -->
+                        <VBox spacing="8"
+                              style="-fx-background-color: white;
+                                     -fx-background-radius: 14;
+                                     -fx-border-color: #ff6b6b;
+                                     -fx-border-width: 0 0 0 4;
+                                     -fx-padding: 10;
+                                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.1), 8, 0, 0, 2);">
+                            <HBox spacing="8">
+                                <StackPane prefWidth="40" prefHeight="40"
+                                           style="-fx-background-color: rgba(255,107,107,0.2);
+                                                  -fx-background-radius: 20;">
+                                    <Label text="⚠"
+                                           style="-fx-text-fill: #ff6b6b; -fx-font-size: 18;"/>
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <HBox spacing="4">
+                                        <Label text="Zwak signaal"
+                                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+                                        <Label text="⚠️"
+                                               style="-fx-font-size: 11; -fx-text-fill: #ff6b6b;"/>
+                                    </HBox>
+                                    <Label text="Tracker #1923 vertoont zwakke verbinding"
+                                           wrapText="true"
+                                           style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                                    <HBox spacing="12">
+                                        <HBox spacing="4">
+                                            <Label text="📍" style="-fx-font-size: 11;"/>
+                                            <Label text="Waddenzee"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                        <HBox spacing="4">
+                                            <Label text="⏱" style="-fx-font-size: 11;"/>
+                                            <Label text="15 min geleden"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card 3 -->
+                        <VBox spacing="8"
+                              style="-fx-background-color: #f8fafc;
+                                     -fx-background-radius: 14;
+                                     -fx-border-color: rgba(6,182,212,0.1);
+                                     -fx-border-width: 1;
+                                     -fx-padding: 10;">
+                            <HBox spacing="8">
+                                <StackPane prefWidth="40" prefHeight="40"
+                                           style="-fx-background-color: rgba(34,211,238,0.2);
+                                                  -fx-background-radius: 20;">
+                                    <Label text="✅"
+                                           style="-fx-text-fill: #22d3ee; -fx-font-size: 18;"/>
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <HBox spacing="4">
+                                        <Label text="Verbinding hersteld"
+                                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+                                        <Label text="✅"
+                                               style="-fx-font-size: 11; -fx-text-fill: #22d3ee;"/>
+                                    </HBox>
+                                    <Label text="Tracker #3401 is weer actief"
+                                           wrapText="true"
+                                           style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                                    <HBox spacing="12">
+                                        <HBox spacing="4">
+                                            <Label text="📍" style="-fx-font-size: 11;"/>
+                                            <Label text="IJsselmeer"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                        <HBox spacing="4">
+                                            <Label text="⏱" style="-fx-font-size: 11;"/>
+                                            <Label text="1 uur geleden"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card 4 -->
+                        <VBox spacing="8"
+                              style="-fx-background-color: white;
+                                     -fx-background-radius: 14;
+                                     -fx-border-color: #ff6b6b;
+                                     -fx-border-width: 0 0 0 4;
+                                     -fx-padding: 10;">
+                            <HBox spacing="8">
+                                <StackPane prefWidth="40" prefHeight="40"
+                                           style="-fx-background-color: rgba(255,107,107,0.2);
+                                                  -fx-background-radius: 20;">
+                                    <Label text="⚠"
+                                           style="-fx-text-fill: #ff6b6b; -fx-font-size: 18;"/>
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <HBox spacing="4">
+                                        <Label text="Batterij laag"
+                                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+                                        <Label text="⚠️"
+                                               style="-fx-font-size: 11; -fx-text-fill: #ff6b6b;"/>
+                                    </HBox>
+                                    <Label text="Tracker #2156 batterij onder 20%"
+                                           wrapText="true"
+                                           style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                                    <HBox spacing="12">
+                                        <HBox spacing="4">
+                                            <Label text="📍" style="-fx-font-size: 11;"/>
+                                            <Label text="Markermeer"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                        <HBox spacing="4">
+                                            <Label text="⏱" style="-fx-font-size: 11;"/>
+                                            <Label text="2 uur geleden"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card 5 -->
+                        <VBox spacing="8"
+                              style="-fx-background-color: #f8fafc;
+                                     -fx-background-radius: 14;
+                                     -fx-border-color: rgba(6,182,212,0.1);
+                                     -fx-border-width: 1;
+                                     -fx-padding: 10;">
+                            <HBox spacing="8">
+                                <StackPane prefWidth="40" prefHeight="40"
+                                           style="-fx-background-color: rgba(34,211,238,0.2);
+                                                  -fx-background-radius: 20;">
+                                    <Label text="✅"
+                                           style="-fx-text-fill: #22d3ee; -fx-font-size: 18;"/>
+                                </StackPane>
+                                <VBox spacing="4">
+                                    <HBox spacing="4">
+                                        <Label text="Alle trackers actief"
+                                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+                                        <Label text="✅"
+                                               style="-fx-font-size: 11; -fx-text-fill: #22d3ee;"/>
+                                    </HBox>
+                                    <Label text="Alle systemen werken normaal"
+                                           wrapText="true"
+                                           style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                                    <HBox spacing="12">
+                                        <HBox spacing="4">
+                                            <Label text="📍" style="-fx-font-size: 11;"/>
+                                            <Label text="Dashboard"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                        <HBox spacing="4">
+                                            <Label text="⏱" style="-fx-font-size: 11;"/>
+                                            <Label text="3 uur geleden"
+                                                   style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                        </HBox>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <HBox AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              spacing="0"
+              alignment="CENTER"
+              style="-fx-background-color: white;
+                     -fx-border-color: rgba(6,182,212,0.2);
+                     -fx-border-width: 1 0 0 0;
+                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 10, 0, 0, -2);
+                     -fx-padding: 4 12 4 12;">
+
+            <!-- Home -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavHome"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>🏠</text>
+                </Button>
+                <Label text="Kaart"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Report -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavReport"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>📝</text>
+                </Button>
+                <Label text="Melden"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Alerts -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavAlerts"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #0369a1;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>🔔</text>
+                </Button>
+                <Label text="Alerts"
+                       style="-fx-text-fill: #0369a1;
+                              -fx-font-size: 10;
+                              -fx-font-weight: bold;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Stats / Beheer -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button fx:id="statsNavButton"
+                        onAction="#onNavStats"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>📊</text>
+                </Button>
+                <Label fx:id="statsNavLabel"
+                       text="Stats"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+        </HBox>
+
+    </children>
+</AnchorPane>

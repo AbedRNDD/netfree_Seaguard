@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.netfreeseaguard.ProfileController"
+            prefWidth="360.0" prefHeight="720.0"
+            style="-fx-background-color: white;">
+
+    <children>
+
+        <!-- Top bar -->
+        <HBox alignment="CENTER_LEFT"
+              spacing="8"
+              AnchorPane.topAnchor="16.0"
+              AnchorPane.leftAnchor="16.0"
+              AnchorPane.rightAnchor="16.0">
+            <Button text="←"
+                    onAction="#onBackClick"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #0369a1;
+                           -fx-font-size: 16;
+                           -fx-padding: 4 8 4 4;"/>
+            <Label text="Profiel"
+                   style="-fx-text-fill: #0c4a6e; -fx-font-size: 16; -fx-font-weight: bold;"/>
+        </HBox>
+
+        <!-- Scrollable content -->
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    AnchorPane.topAnchor="52.0"
+                    AnchorPane.leftAnchor="16.0"
+                    AnchorPane.rightAnchor="16.0"
+                    AnchorPane.bottomAnchor="72.0"
+                    style="-fx-background-color: transparent;">
+            <content>
+                <VBox spacing="12">
+
+                    <!-- Profile header -->
+                    <VBox spacing="8"
+                          style="-fx-background-color: linear-gradient(to right, #0369a1, #06b6d4);
+                                 -fx-background-radius: 18;
+                                 -fx-padding: 16;">
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <StackPane prefWidth="72" prefHeight="72"
+                                       style="-fx-background-color: white;
+                                              -fx-background-radius: 36;">
+                                <Label text="👤"
+                                       style="-fx-font-size: 32; -fx-text-fill: #0369a1;"/>
+                            </StackPane>
+                            <VBox spacing="4">
+                                <Label text="OceanGuard21"
+                                       style="-fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold;"/>
+                                <Label text="Lid sinds 2024"
+                                       style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 12;"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Total reports -->
+                    <VBox spacing="8"
+                          style="-fx-background-color: linear-gradient(to bottom right, #e0f2fe, #e0f2feCC);
+                                 -fx-background-radius: 16;
+                                 -fx-padding: 12;
+                                 -fx-border-color: rgba(6,182,212,0.3);
+                                 -fx-border-radius: 16;">
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <VBox spacing="4">
+                                <Label text="Totaal gerapporteerd"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 12;"/>
+                                <Label fx:id="totalReportsLabel"
+                                       text="12"
+                                       style="-fx-text-fill: #0369a1; -fx-font-size: 24; -fx-font-weight: bold;"/>
+                                <Label text="Ghost nets geregistreerd"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label text="🕸"
+                                   style="-fx-text-fill: #0369a1; -fx-font-size: 32; -fx-opacity: 0.4;"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Map thumbnail -->
+                    <VBox spacing="8"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 16;
+                                 -fx-border-color: rgba(6,182,212,0.2);
+                                 -fx-border-radius: 16;
+                                 -fx-padding: 12;">
+                        <Label text="Jouw rapportages op kaart"
+                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+
+                        <StackPane prefHeight="160"
+                                   style="-fx-background-color: linear-gradient(to bottom, #06b6d41A, #0369a10D);
+                                          -fx-background-radius: 14;">
+                            <Label text="Mini kaart (pins visueel)"
+                                   style="-fx-text-fill: rgba(15,23,42,0.3); -fx-font-size: 11;"/>
+                            <Label fx:id="locationsCountLabel"
+                                   text="4 locaties"
+                                   StackPane.alignment="BOTTOM_RIGHT"
+                                   style="-fx-background-color: rgba(255,255,255,0.85);
+                                          -fx-background-radius: 10;
+                                          -fx-padding: 2 6 2 6;
+                                          -fx-text-fill: #0c4a6e;
+                                          -fx-font-size: 10;
+                                          -fx-translate-x: -6;
+                                          -fx-translate-y: -6;"/>
+                        </StackPane>
+                    </VBox>
+
+                    <!-- Recent reports -->
+                    <VBox spacing="8"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 16;
+                                 -fx-border-color: rgba(6,182,212,0.2);
+                                 -fx-border-radius: 16;
+                                 -fx-padding: 12;">
+                        <Label text="Recente rapportages"
+                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+
+                        <VBox spacing="6">
+                            <!-- 1 -->
+                            <HBox spacing="8"
+                                  style="-fx-border-color: rgba(6,182,212,0.1);
+                                         -fx-border-width: 0 0 1 0;
+                                         -fx-padding: 4 0 4 0;">
+                                <Label text="🕸" style="-fx-font-size: 14;"/>
+                                <VBox spacing="2">
+                                    <HBox spacing="6">
+                                        <Label text="Noordzee, 52.3°N 4.2°E"
+                                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 12;"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Label text="Actief"
+                                               style="-fx-background-color: rgba(255,107,107,0.2);
+                                                      -fx-text-fill: #ff6b6b;
+                                                      -fx-font-size: 10;
+                                                      -fx-background-radius: 10;
+                                                      -fx-padding: 2 6 2 6;"/>
+                                    </HBox>
+                                    <HBox spacing="4">
+                                        <Label text="📅" style="-fx-font-size: 10;"/>
+                                        <Label text="12 okt 2025"
+                                               style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+
+                            <!-- 2 -->
+                            <HBox spacing="8"
+                                  style="-fx-border-color: rgba(6,182,212,0.1);
+                                         -fx-border-width: 0 0 1 0;
+                                         -fx-padding: 4 0 4 0;">
+                                <Label text="🕸" style="-fx-font-size: 14;"/>
+                                <VBox spacing="2">
+                                    <HBox spacing="6">
+                                        <Label text="Waddenzee, 53.4°N 6.1°E"
+                                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 12;"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Label text="Actief"
+                                               style="-fx-background-color: rgba(255,107,107,0.2);
+                                                      -fx-text-fill: #ff6b6b;
+                                                      -fx-font-size: 10;
+                                                      -fx-background-radius: 10;
+                                                      -fx-padding: 2 6 2 6;"/>
+                                    </HBox>
+                                    <HBox spacing="4">
+                                        <Label text="📅" style="-fx-font-size: 10;"/>
+                                        <Label text="10 okt 2025"
+                                               style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+
+                            <!-- 3 -->
+                            <HBox spacing="8"
+                                  style="-fx-padding: 4 0 0 0;">
+                                <Label text="🕸" style="-fx-font-size: 14;"/>
+                                <VBox spacing="2">
+                                    <HBox spacing="6">
+                                        <Label text="IJsselmeer, 52.7°N 5.4°E"
+                                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 12;"/>
+                                        <Region HBox.hgrow="ALWAYS"/>
+                                        <Label text="Opgeruimd"
+                                               style="-fx-background-color: rgba(34,211,238,0.2);
+                                                      -fx-text-fill: #22d3ee;
+                                                      -fx-font-size: 10;
+                                                      -fx-background-radius: 10;
+                                                      -fx-padding: 2 6 2 6;"/>
+                                    </HBox>
+                                    <HBox spacing="4">
+                                        <Label text="📅" style="-fx-font-size: 10;"/>
+                                        <Label text="8 okt 2025"
+                                               style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+
+                    <!-- Achievements -->
+                    <VBox spacing="8"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 16;
+                                 -fx-border-color: rgba(6,182,212,0.2);
+                                 -fx-border-radius: 16;
+                                 -fx-padding: 12;">
+                        <Label text="Behaalde badges"
+                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+
+                        <HBox spacing="12">
+                            <VBox spacing="4" alignment="CENTER">
+                                <StackPane prefWidth="56" prefHeight="56"
+                                           style="-fx-background-color: #e0f2fe;
+                                                  -fx-background-radius: 28;">
+                                    <Label text="🪸" style="-fx-font-size: 24;"/>
+                                </StackPane>
+                                <Label text="Eerste net"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                            </VBox>
+
+                            <VBox spacing="4" alignment="CENTER">
+                                <StackPane prefWidth="56" prefHeight="56"
+                                           style="-fx-background-color: #e0f2fe;
+                                                  -fx-background-radius: 28;">
+                                    <Label text="⚓" style="-fx-font-size: 24;"/>
+                                </StackPane>
+                                <Label text="5 nets"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                            </VBox>
+
+                            <VBox spacing="4" alignment="CENTER">
+                                <StackPane prefWidth="56" prefHeight="56"
+                                           style="-fx-background-color: #e0f2fe;
+                                                  -fx-background-radius: 28;">
+                                    <Label text="🌊" style="-fx-font-size: 24;"/>
+                                </StackPane>
+                                <Label text="Guardian"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Account info -->
+                    <VBox spacing="8"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 16;
+                                 -fx-border-color: rgba(6,182,212,0.2);
+                                 -fx-border-radius: 16;
+                                 -fx-padding: 12;">
+                        <Label text="Account informatie"
+                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+
+                        <VBox spacing="6">
+                            <HBox spacing="8">
+                                <Label text="✉" style="-fx-text-fill: #06b6d4; -fx-font-size: 14;"/>
+                                <Label text="oceanguard21@email.com"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                            </HBox>
+                            <HBox spacing="8">
+                                <Label text="📍" style="-fx-text-fill: #06b6d4; -fx-font-size: 14;"/>
+                                <Label text="Nederland"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                            </HBox>
+                            <HBox spacing="8">
+                                <Label text="🏅" style="-fx-text-fill: #06b6d4; -fx-font-size: 14;"/>
+                                <Label text="Visserman (Vissers)"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <!-- Logout button -->
+        <Button text="Uitloggen"
+                onAction="#onLogoutClick"
+                AnchorPane.leftAnchor="16.0"
+                AnchorPane.rightAnchor="16.0"
+                AnchorPane.bottomAnchor="16.0"
+                style="-fx-background-radius: 16;
+                       -fx-border-color: #ff6b6b;
+                       -fx-border-width: 1;
+                       -fx-text-fill: #ff6b6b;
+                       -fx-font-size: 13;
+                       -fx-padding: 8 0 8 0;
+                       -fx-background-color: transparent;
+                       -fx-background-insets: 0;
+                       -fx-focus-color: transparent;
+                       -fx-faint-focus-color: transparent;"/>
+
+    </children>
+</AnchorPane>

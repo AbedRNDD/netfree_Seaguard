@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.netfreeseaguard.StatsController"
+            prefWidth="360.0" prefHeight="720.0"
+            stylesheets="@app.css"
+            style="-fx-background-color: white;">
+
+    <children>
+
+        <!-- FULL HEADER (same base as dashboard) -->
+        <BorderPane AnchorPane.topAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0"
+                    prefHeight="64.0"
+                    styleClass="dashboard-header">
+
+            <padding>
+                <Insets top="6" bottom="6" left="12" right="12"/>
+            </padding>
+
+            <left>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <StackPane prefWidth="40" prefHeight="40"
+                               styleClass="header-logo-circle">
+                        <Label text="14"
+                               style="-fx-text-fill:#0369a1; -fx-font-size:16; -fx-font-weight:bold;"/>
+                    </StackPane>
+
+                    <VBox spacing="2">
+                        <Label text="Ghost Net Tracker"
+                               styleClass="header-title"/>
+                        <Label text="Statistieken &amp; Analyse"
+                               styleClass="header-subtitle"/>
+                    </VBox>
+                </HBox>
+            </left>
+
+            <right>
+                <Button onAction="#onMenuClick"
+                        styleClass="header-menu-btn">
+                    <text>≡</text>
+                </Button>
+            </right>
+        </BorderPane>
+
+        <!-- SCROLLABLE CONTENT (between header and bottom nav) -->
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    AnchorPane.topAnchor="64.0"
+                    AnchorPane.leftAnchor="16.0"
+                    AnchorPane.rightAnchor="16.0"
+                    AnchorPane.bottomAnchor="56.0"
+                    style="-fx-background-color: transparent;">
+            <content>
+                <VBox spacing="12">
+
+                    <!-- Metrics grid -->
+                    <GridPane hgap="8" vgap="8">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+
+                        <!-- Card 1: Totaal gemeld -->
+                        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0"
+                              spacing="6"
+                              style="-fx-background-color: linear-gradient(to bottom right, #0369a1, #06b6d4);
+                                     -fx-background-radius: 14;
+                                     -fx-padding: 10;
+                                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.25), 10, 0, 0, 4);">
+                            <Label text="Totaal gemeld"
+                                   style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 10;"/>
+                            <Label fx:id="totalReportsLabel"
+                                   text="0"
+                                   style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                            <HBox spacing="4" alignment="CENTER_LEFT">
+                                <Label text="⬆"
+                                       style="-fx-text-fill: white; -fx-font-size: 10;"/>
+                                <Label text="+25 deze maand"
+                                       style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 10;"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card 2: Opgeruimd -->
+                        <VBox GridPane.rowIndex="0" GridPane.columnIndex="1"
+                              spacing="6"
+                              style="-fx-background-color: linear-gradient(to bottom right, #22d3ee, #22d3eeCC);
+                                     -fx-background-radius: 14;
+                                     -fx-padding: 10;
+                                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.25), 10, 0, 0, 4);">
+                            <Label text="Opgeruimd"
+                                   style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 10;"/>
+                            <Label fx:id="totalRecoveredLabel"
+                                   text="0"
+                                   style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                            <HBox spacing="4" alignment="CENTER_LEFT">
+                                <Label text="⧖"
+                                       style="-fx-text-fill: white; -fx-font-size: 10;"/>
+                                <Label fx:id="recoveryRateLabel"
+                                       text="0% ratio"
+                                       style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 10;"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card 3: Nog actief -->
+                        <VBox GridPane.rowIndex="1" GridPane.columnIndex="0"
+                              spacing="6"
+                              style="-fx-background-color: linear-gradient(to bottom right, #ff6b6b, #ff8787);
+                                     -fx-background-radius: 14;
+                                     -fx-padding: 10;
+                                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.25), 10, 0, 0, 4);">
+                            <Label text="Nog actief"
+                                   style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 10;"/>
+                            <Label fx:id="activeNetsLabel"
+                                   text="0"
+                                   style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                            <HBox spacing="4" alignment="CENTER_LEFT">
+                                <Label text="⬇"
+                                       style="-fx-text-fill: white; -fx-font-size: 10;"/>
+                                <Label text="-7 vs vorige maand"
+                                       style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 10;"/>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Card 4: Opruim ratio -->
+                        <VBox GridPane.rowIndex="1" GridPane.columnIndex="1"
+                              spacing="6"
+                              style="-fx-background-color: linear-gradient(to bottom right, #fbbf24, #fbbf24CC);
+                                     -fx-background-radius: 14;
+                                     -fx-padding: 10;
+                                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.25), 10, 0, 0, 4);">
+                            <Label text="Opruim ratio"
+                                   style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 10;"/>
+                            <Label fx:id="ratioLabel"
+                                   text="0%"
+                                   style="-fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                            <HBox spacing="4" alignment="CENTER_LEFT">
+                                <Label text="⬆"
+                                       style="-fx-text-fill: white; -fx-font-size: 10;"/>
+                                <Label text="+5% verbetering"
+                                       style="-fx-text-fill: rgba(255,255,255,0.9); -fx-font-size: 10;"/>
+                            </HBox>
+                        </VBox>
+                    </GridPane>
+
+                    <!-- Active nets trend (LineChart) -->
+                    <VBox spacing="6"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 14;
+                                 -fx-border-color: rgba(6,182,212,0.2);
+                                 -fx-border-radius: 14;
+                                 -fx-padding: 10;
+                                 -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.1), 6, 0, 0, 2);">
+                        <Label text="Actieve netten trend"
+                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+
+                        <LineChart fx:id="trendChart"
+                                   prefHeight="180.0"
+                                   legendVisible="false">
+                            <xAxis>
+                                <CategoryAxis label=""/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label=""/>
+                            </yAxis>
+                        </LineChart>
+                    </VBox>
+
+                    <!-- Monthly reports (BarChart) -->
+                    <VBox spacing="6"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 14;
+                                 -fx-border-color: rgba(6,182,212,0.2);
+                                 -fx-border-radius: 14;
+                                 -fx-padding: 10;
+                                 -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.1), 6, 0, 0, 2);">
+                        <Label text="Gemeld vs opgeruimd (6 maanden)"
+                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+
+                        <BarChart fx:id="monthlyChart"
+                                  prefHeight="220.0"
+                                  legendVisible="true">
+                            <xAxis>
+                                <CategoryAxis label=""/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis label=""/>
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+
+                    <!-- Oceans distribution -->
+                    <VBox spacing="8"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 14;
+                                 -fx-border-color: rgba(6,182,212,0.2);
+                                 -fx-border-radius: 14;
+                                 -fx-padding: 10;
+                                 -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.1), 6, 0, 0, 2);">
+                        <Label text="Verdeling per oceaan/zee"
+                               style="-fx-text-fill: #0c4a6e; -fx-font-size: 13; -fx-font-weight: bold;"/>
+
+                        <!-- Pacific -->
+                        <VBox spacing="4">
+                            <HBox alignment="CENTER_LEFT" spacing="4">
+                                <Label text="Pacific Ocean"
+                                       style="-fx-text-fill: #0c4a6e; -fx-font-size: 11;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="pacificCountLabel"
+                                       text="42 nets"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10; -fx-font-weight: bold;"/>
+                            </HBox>
+                            <ProgressBar fx:id="pacificProgress" prefHeight="6.0"/>
+                        </VBox>
+
+                        <!-- Atlantic -->
+                        <VBox spacing="4">
+                            <HBox alignment="CENTER_LEFT" spacing="4">
+                                <Label text="Atlantic Ocean"
+                                       style="-fx-text-fill: #0c4a6e; -fx-font-size: 11;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="atlanticCountLabel"
+                                       text="31 nets"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10; -fx-font-weight: bold;"/>
+                            </HBox>
+                            <ProgressBar fx:id="atlanticProgress" prefHeight="6.0"/>
+                        </VBox>
+
+                        <!-- Indian -->
+                        <VBox spacing="4">
+                            <HBox alignment="CENTER_LEFT" spacing="4">
+                                <Label text="Indian Ocean"
+                                       style="-fx-text-fill: #0c4a6e; -fx-font-size: 11;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="indianCountLabel"
+                                       text="24 nets"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10; -fx-font-weight: bold;"/>
+                            </HBox>
+                            <ProgressBar fx:id="indianProgress" prefHeight="6.0"/>
+                        </VBox>
+
+                        <!-- Mediterranean -->
+                        <VBox spacing="4">
+                            <HBox alignment="CENTER_LEFT" spacing="4">
+                                <Label text="Mediterranean Sea"
+                                       style="-fx-text-fill: #0c4a6e; -fx-font-size: 11;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="medCountLabel"
+                                       text="13 nets"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10; -fx-font-weight: bold;"/>
+                            </HBox>
+                            <ProgressBar fx:id="medProgress" prefHeight="6.0"/>
+                        </VBox>
+                    </VBox>
+
+                    <!-- Data security notice -->
+                    <VBox spacing="8"
+                          style="-fx-background-color: rgba(224,242,254,0.3);
+                                 -fx-background-radius: 14;
+                                 -fx-border-color: rgba(6,182,212,0.2);
+                                 -fx-border-radius: 14;
+                                 -fx-padding: 10;">
+                        <HBox spacing="8">
+                            <Label text="🔒"
+                                   style="-fx-font-size: 20;"/>
+                            <VBox spacing="4">
+                                <Label text="Data beveiliging"
+                                       style="-fx-text-fill: #0c4a6e; -fx-font-size: 12; -fx-font-weight: bold;"/>
+                                <Label text="Alle gegevens worden veilig opgeslagen met end-to-end encryptie. Toegang is beperkt tot geautoriseerde gebruikers."
+                                       wrapText="true"
+                                       style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <HBox AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              spacing="0"
+              alignment="CENTER"
+              style="-fx-background-color: white;
+                     -fx-border-color: rgba(6,182,212,0.2);
+                     -fx-border-width: 1 0 0 0;
+                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 10, 0, 0, -2);
+                     -fx-padding: 4 12 4 12;">
+
+            <!-- Home -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavHome"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>🏠</text>
+                </Button>
+                <Label text="Kaart"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Report -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavReport"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>📝</text>
+                </Button>
+                <Label text="Melden"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Alerts -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavAlerts"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>🔔</text>
+                </Button>
+                <Label text="Alerts"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Stats / Beheer -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button fx:id="statsNavButton"
+                        onAction="#onNavStats"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #0369a1;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>📊</text>
+                </Button>
+                <Label fx:id="statsNavLabel"
+                       text="Stats"
+                       style="-fx-text-fill: #0369a1;
+                              -fx-font-size: 10;
+                              -fx-font-weight: bold;"/>
+            </VBox>
+        </HBox>
+    </children>
+</AnchorPane>

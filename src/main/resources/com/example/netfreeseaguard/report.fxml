@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.netfreeseaguard.ReportController"
+            fx:id="root"
+            prefWidth="360.0" prefHeight="720.0"
+            style="-fx-background-color: white;"
+            stylesheets="@app.css">
+
+    <children>
+
+        <!-- FORM STATE -->
+        <VBox fx:id="formRoot"
+              spacing="16"
+              AnchorPane.topAnchor="16.0"
+              AnchorPane.leftAnchor="16.0"
+              AnchorPane.rightAnchor="16.0"
+              AnchorPane.bottomAnchor="80.0">
+
+            <padding>
+                <Insets top="8" bottom="8" left="4" right="4"/>
+            </padding>
+
+            <!-- Header with back button -->
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Button text="←"
+                        onAction="#onBackClick"
+                        style="-fx-background-color: transparent;
+                               -fx-background-insets: 0;
+                               -fx-border-color: transparent;
+                               -fx-text-fill: #0369a1;
+                               -fx-font-size: 16;"/>
+                <VBox spacing="2">
+                    <Label text="Report Ghost Net"
+                           style="-fx-text-fill: #0c4a6e; -fx-font-size: 16; -fx-font-weight: bold;"/>
+                    <Label text="Help us track abandoned fishing nets"
+                           style="-fx-text-fill: #64748b; -fx-font-size: 11;"/>
+                </VBox>
+            </HBox>
+
+            <Separator/>
+
+            <!-- Photo upload -->
+            <VBox spacing="6">
+                <Label text="Photo Evidence"
+                       style="-fx-font-size: 12; -fx-text-fill: #0f172a;"/>
+
+                <VBox spacing="8" alignment="CENTER"
+                      style="-fx-border-color: rgba(6,182,212,0.4);
+                             -fx-border-width: 2;
+                             -fx-background-color: rgba(224,242,254,0.3);
+                             -fx-background-radius: 14;
+                             -fx-padding: 16;">
+                    <Label text="📷" style="-fx-font-size: 24;"/>
+                    <Label text="Tap to upload photo"
+                           style="-fx-text-fill: #0c4a6e; -fx-font-size: 12;"/>
+                    <Label text="JPG, PNG up to 10MB"
+                           style="-fx-text-fill: #64748b; -fx-font-size: 10;"/>
+                </VBox>
+            </VBox>
+
+            <!-- Location -->
+            <VBox spacing="6">
+                <Label text="Location"
+                       style="-fx-font-size: 12; -fx-text-fill: #0f172a;"/>
+
+                <TextField fx:id="locationField"
+                           promptText="Enter location or coordinates"
+                           style="-fx-background-radius: 12;
+                                  -fx-border-color: rgba(6,182,212,0.3);
+                                  -fx-background-color: white;"/>
+            </VBox>
+
+            <!-- Description -->
+            <VBox spacing="6">
+                <Label text="Additional Details (Optional)"
+                       style="-fx-font-size: 12; -fx-text-fill: #0f172a;"/>
+
+                <TextArea fx:id="descriptionArea"
+                          promptText="Size, condition, nearby hazards..."
+                          prefRowCount="4"
+                          wrapText="true"
+                          style="-fx-background-radius: 12;
+                                 -fx-border-color: rgba(6,182,212,0.3);
+                                 -fx-background-color: white;"/>
+            </VBox>
+
+            <!-- Status label -->
+            <Label fx:id="statusLabel"
+                   textFill="#64748b"
+                   style="-fx-font-size: 11;"/>
+
+            <!-- Submit button -->
+            <Button text="Report Ghost Net"
+                    onAction="#onSubmit"
+                    maxWidth="Infinity"
+                    style="-fx-background-radius: 14;
+                           -fx-background-color: linear-gradient(to right,#ff6b6b,#ff8787);
+                           -fx-text-fill: white;
+                           -fx-font-size: 13;
+                           -fx-font-weight: bold;
+                           -fx-padding: 10 0 10 0;"/>
+
+            <HBox alignment="CENTER">
+                <Label text="🕸"
+                       style="-fx-text-fill: #0369a1; -fx-font-size: 32; -fx-opacity: 0.2;"/>
+            </HBox>
+        </VBox>
+
+        <!-- SUCCESS STATE -->
+        <VBox fx:id="successRoot"
+              visible="false" managed="false"
+              spacing="12"
+              alignment="CENTER"
+              AnchorPane.topAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0"
+              AnchorPane.bottomAnchor="80.0"
+              style="-fx-background-color: white;">
+            <padding>
+                <Insets top="40" bottom="40" left="24" right="24"/>
+            </padding>
+
+            <StackPane prefWidth="80" prefHeight="80"
+                       style="-fx-background-color: rgba(34,211,238,0.2);
+                              -fx-background-radius: 40;">
+                <Label text="✔" style="-fx-text-fill: #0369a1; -fx-font-size: 32;"/>
+            </StackPane>
+
+            <Label text="Ghost net added to map"
+                   style="-fx-text-fill: #0c4a6e; -fx-font-size: 16; -fx-font-weight: bold;"/>
+
+            <Label text="Thank you for helping protect our oceans!"
+                   wrapText="true"
+                   maxWidth="260"
+                   style="-fx-text-fill: #64748b; -fx-font-size: 12;"/>
+
+            <Button text="Back to map"
+                    onAction="#onBackClick"
+                    style="-fx-background-radius: 14;
+                           -fx-background-color: #0369a1;
+                           -fx-text-fill: white;
+                           -fx-font-size: 12;
+                           -fx-padding: 8 16 8 16;"/>
+        </VBox>
+
+        <HBox AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              spacing="0"
+              alignment="CENTER"
+              style="-fx-background-color: white;
+                     -fx-border-color: rgba(6,182,212,0.2);
+                     -fx-border-width: 1 0 0 0;
+                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 10, 0, 0, -2);
+                     -fx-padding: 4 12 4 12;">
+
+            <!-- Home -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavHome"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>🏠</text>
+                </Button>
+                <Label text="Kaart"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Report -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavReport"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #0369a1;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>📝</text>
+                </Button>
+                <Label text="Melden"
+                       style="-fx-text-fill: #0369a1;
+                              -fx-font-size: 10;
+                              -fx-font-weight: bold;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Alerts -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavAlerts"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>🔔</text>
+                </Button>
+                <Label text="Alerts"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Stats / Beheer -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button fx:id="statsNavButton"
+                        onAction="#onNavStats"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>📊</text>
+                </Button>
+                <Label fx:id="statsNavLabel"
+                       text="Stats"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+        </HBox>
+
+    </children>
+</AnchorPane>

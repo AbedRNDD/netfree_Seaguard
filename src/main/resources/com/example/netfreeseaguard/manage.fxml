@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.netfreeseaguard.ManageNetsController"
+            prefWidth="360.0" prefHeight="720.0"
+            stylesheets="@app.css"
+            style="-fx-background-color:white;">
+
+    <children>
+
+        <!-- FULL DASHBOARD HEADER -->
+        <BorderPane AnchorPane.topAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0"
+                    prefHeight="64.0"
+                    styleClass="dashboard-header">
+
+            <padding>
+                <Insets top="6" bottom="6" left="12" right="12"/>
+            </padding>
+
+            <left>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <StackPane prefWidth="40" prefHeight="40"
+                               styleClass="header-logo-circle">
+                        <Label text="14"
+                               style="-fx-text-fill:#0369a1; -fx-font-size:16; -fx-font-weight:bold;"/>
+                    </StackPane>
+
+                    <VBox spacing="2">
+                        <Label text="Ghost Net Tracker" styleClass="header-title"/>
+                        <Label text="Beheer netten"      styleClass="header-subtitle"/>
+                    </VBox>
+                </HBox>
+            </left>
+
+            <right>
+                <Button onAction="#onMenuClick"
+                        styleClass="header-menu-btn">
+                    <text>≡</text>
+                </Button>
+            </right>
+        </BorderPane>
+
+        <!-- SCROLL CONTENT -->
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    AnchorPane.topAnchor="64.0"
+                    AnchorPane.leftAnchor="16.0"
+                    AnchorPane.rightAnchor="16.0"
+                    AnchorPane.bottomAnchor="56.0"
+                    style="-fx-background-color:transparent;">
+            <content>
+
+                <!-- YOUR ORIGINAL MANAGE CONTENT BELOW -->
+                <VBox spacing="12">
+
+                    <!-- Summary cards -->
+                    <GridPane hgap="8" vgap="8">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+
+                        <!-- Active -->
+                        <VBox GridPane.rowIndex="0" GridPane.columnIndex="0"
+                              spacing="4"
+                              styleClass="summary-card summary-card-active">
+                            <Label fx:id="activeCountLabel"
+                                   text="0"
+                                   styleClass="summary-number-active"/>
+                            <Label text="Actief"
+                                   styleClass="summary-caption"/>
+                        </VBox>
+
+                        <!-- Recovered -->
+                        <VBox GridPane.rowIndex="0" GridPane.columnIndex="1"
+                              spacing="4"
+                              styleClass="summary-card summary-card-recovered">
+                            <Label fx:id="recoveredCountLabel"
+                                   text="0"
+                                   styleClass="summary-number-recovered"/>
+                            <Label text="Opgeruimd"
+                                   styleClass="summary-caption"/>
+                        </VBox>
+                    </GridPane>
+
+                    <!-- Search -->
+                    <VBox spacing="4">
+                        <Label text="Zoek"
+                               style="-fx-text-fill:#64748b; -fx-font-size:11;"/>
+                        <TextField fx:id="searchField"
+                                   promptText="Zoek op ID, locatie of gebruiker..."
+                                   onKeyReleased="#onSearchChanged"
+                                   styleClass="input-search"/>
+                    </VBox>
+
+                    <!-- Add button -->
+                    <Button text="Nieuw net registreren"
+                            onAction="#onToggleAddForm"
+                            maxWidth="Infinity"
+                            styleClass="btn-primary"/>
+
+                    <!-- Add form -->
+                    <VBox fx:id="addFormBox"
+                          spacing="8"
+                          visible="false"
+                          managed="false"
+                          styleClass="add-form-card">
+                        <Label text="Nieuw ghost net"
+                               styleClass="add-form-title"/>
+
+                        <VBox spacing="4">
+                            <Label text="Net ID" styleClass="field-label"/>
+                            <TextField fx:id="netIdField"
+                                       promptText="NET-XXXX"
+                                       styleClass="input-plain"/>
+                        </VBox>
+
+                        <VBox spacing="4">
+                            <Label text="Locatie" styleClass="field-label"/>
+                            <TextField fx:id="locationField"
+                                       promptText="Coördinaten of gebied"
+                                       styleClass="input-plain"/>
+                        </VBox>
+
+                        <VBox spacing="4">
+                            <Label text="Gemeld door" styleClass="field-label"/>
+                            <TextField fx:id="reporterField"
+                                       promptText="Gebruikersnaam"
+                                       styleClass="input-plain"/>
+                        </VBox>
+
+                        <HBox spacing="8">
+                            <Button text="Annuleren"
+                                    onAction="#onCancelAdd"
+                                    maxWidth="Infinity"
+                                    styleClass="btn-secondary"
+                                    HBox.hgrow="ALWAYS"/>
+                            <Button text="Toevoegen"
+                                    onAction="#onAddNet"
+                                    maxWidth="Infinity"
+                                    styleClass="btn-accent"
+                                    HBox.hgrow="ALWAYS"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- List of nets -->
+                    <VBox fx:id="listContainer" spacing="8"/>
+
+                    <!-- Empty state -->
+                    <VBox fx:id="emptyStateBox"
+                          spacing="6"
+                          alignment="CENTER"
+                          visible="false"
+                          managed="false"
+                          styleClass="empty-state">
+                        <Label text="🔎" styleClass="empty-state-emoji"/>
+                        <Label text="Geen resultaten" styleClass="empty-state-title"/>
+                        <Label text="Probeer een andere zoekopdracht" styleClass="empty-state-subtitle"/>
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <HBox AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0"
+              AnchorPane.bottomAnchor="0.0"
+              spacing="0"
+              alignment="CENTER"
+              style="-fx-background-color: white;
+                     -fx-border-color: rgba(6,182,212,0.2);
+                     -fx-border-width: 1 0 0 0;
+                     -fx-effect: dropshadow(gaussian, rgba(15,23,42,0.12), 10, 0, 0, -2);
+                     -fx-padding: 4 12 4 12;">
+
+            <!-- Home -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavHome"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>🏠</text>
+                </Button>
+                <Label text="Kaart"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Report -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavReport"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>📝</text>
+                </Button>
+                <Label text="Melden"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Alerts -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button onAction="#onNavAlerts"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #64748b;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>🔔</text>
+                </Button>
+                <Label text="Alerts"
+                       style="-fx-text-fill: #64748b;
+                              -fx-font-size: 10;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Stats / Beheer -->
+            <VBox alignment="CENTER" spacing="2">
+                <Button fx:id="statsNavButton"
+                        onAction="#onNavStats"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #0369a1;
+                               -fx-font-size: 18;
+                               -fx-padding: 2 6 2 6;">
+                    <text>📊</text>
+                </Button>
+                <Label fx:id="statsNavLabel"
+                       text="beheer"
+                       style="-fx-text-fill: #0369a1;
+                              -fx-font-size: 10;
+                              -fx-font-weight: bold;"/>
+            </VBox>
+        </HBox>
+
+    </children>
+</AnchorPane>
