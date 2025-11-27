@@ -1,17 +1,21 @@
 package com.example.netfreeseaguard;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class DashboardController {
@@ -53,7 +57,8 @@ public class DashboardController {
     );
 
     // --- FXML fields ---
-    @FXML private Pane mapPane;
+    @FXML private StackPane mapContainer;
+    @FXML private WebView mapWebView;
     @FXML private ToggleButton mijnTrackersToggle;
     @FXML private ToggleButton wereldKaartToggle;
 
@@ -70,7 +75,8 @@ public class DashboardController {
 
     // --- State ---
     private String viewMode = "own";
-    private double zoom = 1.0;
+    private WebEngine mapEngine;
+    private boolean mapReady = false;
 
     // --- Role ---
     private String userRole;
@@ -89,7 +95,7 @@ public class DashboardController {
         }
 
         viewMode = "own";
-        refreshMap();
+        setupMap();
         updateStats();
         hideDetailPanel();
         updateViewToggleStyles();
@@ -141,45 +147,53 @@ public class DashboardController {
 
     // ============== map ==============
 
-    private void refreshMap() {
-        mapPane.getChildren().clear();
+    private void setupMap() {
+        mapEngine = mapWebView.getEngine();
+        mapWebView.setContextMenuEnabled(false);
 
-        double width = mapPane.getPrefWidth();
-        double height = mapPane.getPrefHeight();
+        String mapUrl = Objects.requireNonNull(
+                HelloApplication.class.getResource("map.html")
+        ).toExternalForm();
+
+        mapEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                JSObject window = (JSObject) mapEngine.executeScript("window");
+                window.setMember("javaConnector", new JsBridge());
+                mapReady = true;
+                refreshMap();
+            }
+        });
+
+        mapEngine.load(mapUrl);
+    }
+
+    private void refreshMap() {
+        if (!mapReady) return;
+
+        mapEngine.executeScript("window.clearMarkers();");
 
         for (Report r : getDisplayedReports()) {
-            Circle marker = new Circle(8, Color.web("#ff6b6b"));
-            marker.setStroke(Color.web("#dc2626"));
-            marker.setStrokeWidth(1.5);
-
-            marker.setLayoutX(width * (r.lngPercent / 100.0));
-            marker.setLayoutY(height * (r.latPercent / 100.0));
-
-            marker.setOnMouseClicked(e -> showDetailPanel(r));
-
-            mapPane.getChildren().add(marker);
+            String script = String.format(Locale.US,
+                    "window.addMarker(%d, %f, %f);",
+                    r.id, r.latPercent, r.lngPercent);
+            mapEngine.executeScript(script);
         }
-
-        applyZoom();
     }
 
     // ============== zoom ==============
 
     @FXML
     private void onZoomIn() {
-        zoom = Math.min(zoom + 0.2, 2.0);
-        applyZoom();
+        if (mapReady) {
+            mapEngine.executeScript("window.zoomIn();");
+        }
     }
 
     @FXML
     private void onZoomOut() {
-        zoom = Math.max(zoom - 0.2, 0.6);
-        applyZoom();
-    }
-
-    private void applyZoom() {
-        mapPane.setScaleX(zoom);
-        mapPane.setScaleY(zoom);
+        if (mapReady) {
+            mapEngine.executeScript("window.zoomOut();");
+        }
     }
 
     // ============== detail panel ==============
@@ -255,11 +269,20 @@ public class DashboardController {
                     HelloApplication.class.getResource(fxml)
             );
             Scene scene = new Scene(loader.load(), 360, 720);
-            Stage stage = (Stage) mapPane.getScene().getWindow();
+            Stage stage = (Stage) mapContainer.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle(title);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public class JsBridge {
+        public void onMarkerClick(int id) {
+            Platform.runLater(() -> allReports.stream()
+                    .filter(r -> r.id == id)
+                    .findFirst()
+                    .ifPresent(DashboardController.this::showDetailPanel));
         }
     }
 }

@@ -43,8 +43,13 @@
         markers.length = 0;
     };
 
-    window.addMarker = function(lat, lng) {
+    window.addMarker = function(id, lat, lng) {
         let m = L.marker([lat, lng]).addTo(window.map);
+        m.on('click', () => {
+            if (window.javaConnector && window.javaConnector.onMarkerClick) {
+                window.javaConnector.onMarkerClick(id);
+            }
+        });
         markers.push(m);
     };
 
