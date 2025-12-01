@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -33,9 +34,9 @@
                     </StackPane>
 
                     <VBox spacing="2">
-                        <Label text="Ghost Net Tracker"
+                        <Label text="Spooknet Tracker"
                                styleClass="header-title"/>
-                        <Label text="Track Ghost Nets"
+                        <Label text="Volg Spooknetten"
                                styleClass="header-subtitle"/>
                     </VBox>
                 </HBox>
@@ -50,69 +51,13 @@
         </BorderPane>
 
         <!-- MAP AREA between header and bottom nav -->
-        <StackPane fx:id="mapContainer"
-                   AnchorPane.topAnchor="64.0"
-                   AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"
-                   AnchorPane.bottomAnchor="120.0"
-                   styleClass="map-background">
-            <children>
-                <Pane fx:id="mapPane"
-                      prefWidth="360.0" prefHeight="536.0"
-                      style="-fx-background-color: transparent;"/>
-            </children>
-        </StackPane>
+        <WebView fx:id="webView"
+                 AnchorPane.topAnchor="64.0"
+                 AnchorPane.leftAnchor="0.0"
+                 AnchorPane.rightAnchor="0.0"
+                 AnchorPane.bottomAnchor="120.0"/>
 
-        <!-- VIEW TOGGLE sits on top of map -->
-        <HBox layoutX="16.0" layoutY="72.0"
-              spacing="0"
-              styleClass="view-toggle-container">
-            <padding>
-                <Insets top="2" bottom="2" left="2" right="2"/>
-            </padding>
 
-            <ToggleButton fx:id="mijnTrackersToggle"
-                          text="Mijn trackers"
-                          onAction="#onViewModeOwn"
-                          styleClass="view-toggle-btn"/>
-
-            <ToggleButton fx:id="wereldKaartToggle"
-                          text="🌍 Wereldkaart"
-                          onAction="#onViewModeGlobal"
-                          styleClass="view-toggle-btn"/>
-        </HBox>
-
-        <!-- DETAIL PANEL -->
-        <VBox fx:id="detailPanel"
-              visible="false" managed="false"
-              prefWidth="260.0"
-              AnchorPane.topAnchor="88.0"
-              AnchorPane.rightAnchor="16.0"
-              spacing="8"
-              styleClass="detail-panel">
-
-            <HBox spacing="8">
-                <Label text="🕸" style="-fx-font-size: 14;"/>
-                <Label text="Ghost Net" styleClass="detail-title"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Button text="✕"
-                        onAction="#onClosePanel"
-                        style="-fx-background-color: transparent;
-                               -fx-text-fill: #64748b;
-                               -fx-padding: 0 4 0 4;"/>
-            </HBox>
-
-            <Label fx:id="detailInfoLabel"
-                   wrapText="true"
-                   styleClass="detail-text"/>
-
-            <VBox spacing="4">
-                <Label text="Location" styleClass="detail-label"/>
-                <Label fx:id="detailLocationLabel"
-                       wrapText="true"
-                       styleClass="detail-text"/>
-            </VBox>
-        </VBox>
 
         <!-- STATS CARD just above bottom nav -->
         <HBox AnchorPane.leftAnchor="16.0"
@@ -126,7 +71,7 @@
                        text="0"
                        styleClass="stats-number-main stats-number-total"/>
                 <Label fx:id="totalLabelCaption"
-                       text="Mijn Nets"
+                       text="Totaal Netten"
                        styleClass="stats-label"/>
             </VBox>
 
@@ -227,7 +172,7 @@
                                -fx-padding: 2 6 2 6;">
                     <text>🔔</text>
                 </Button>
-                <Label text="Alerts"
+                <Label text="Meldingen"
                        style="-fx-text-fill: #64748b;
                               -fx-font-size: 10;"/>
             </VBox>
@@ -245,7 +190,7 @@
                     <text>📊</text>
                 </Button>
                 <Label fx:id="statsNavLabel"
-                       text="Stats"
+                       text="Statistieken"
                        style="-fx-text-fill: #64748b;
                               -fx-font-size: 10;"/>
             </VBox>

@@ -45,6 +45,11 @@ public class RootController {
     }
 
     @FXML
+    private void goMap() {
+        loadScreen("map.fxml");
+    }
+
+    @FXML
     private void goReport() {
         loadScreen("report.fxml");
     }
